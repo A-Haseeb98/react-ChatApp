@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 import BasicTextFields from '../Input';
 import BasicButtons from '../Button';
 import { useState, useEffect } from 'react'
-import { db, getDocs, collection, query, where, addDoc } from '../../config/Firebase'
+import { db, getDocs, collection, query, where, addDoc, doc, updateDoc } from '../../config/Firebase'
 import { useParams } from 'react-router-dom';
 
 
@@ -60,6 +60,11 @@ export default function BasicModal() {
         await addDoc(collectionRef, { usersInGroup, groupName, admin: uid, timestamp: new Date() })
             .then((data) => {
                 console.log(data.id)
+                const washingtonRef = doc(db, "GroupChat", data.id);
+
+                updateDoc(washingtonRef, {
+                    groupId : data.id
+                    }).then(()=> console.log('done updata') );
                 console.log('done')
             })
     }
